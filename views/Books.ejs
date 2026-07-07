@@ -1,0 +1,61 @@
+<%- include('partials/header'); -%>
+<body>
+    
+    <div class="container">
+        <form>
+        <h1>Adding Books</h1>
+        <label for="title">Title :</label>
+        <input type="text" name="title" required>
+        <div class="title error"></div>
+        <label for="Author">Author : </label>
+        <input type="text" name="Author" required>
+        <div class="Author error"></div>
+        <label for="ISBN">ISBN : </label>
+        <input type="number" name="ISBN" required>
+        <div class="ISBN error"></div>
+        <button>Add</button>
+    </form>
+    </div>
+<script>
+    const form = document.querySelector('form');
+    const titleerror = document.querySelector('.title.error');
+    const authorerror = document.querySelector('.Author.error');
+    const isbnerror = document.querySelector('.ISBN.error');
+
+    form.addEventListener('submit' ,async (e) =>{
+        e.preventDefault();
+
+        titleerror.textContent = '';
+        authorerror.textContent = '';
+        isbnerror.textContent = '';
+
+        const title = form.title.value;
+        const author = form.Author.value;
+        const isbn = form.ISBN.value;
+
+        try {
+            const res = await fetch('/books' , {
+                method : "POST",
+                body : JSON.stringify({title , author, ISBN :isbn}),
+                headers : {'Content-Type' : 'application/json'}
+            });
+
+            const data = await res.json();
+
+            if(data.errors){
+                title.textContent = data.errors.title;
+                author.textContent = data.errors.author;
+                isbn.textContent = data.errors.ISBN;
+            }
+            if(data.book){
+                location.assign('/')
+            }
+            
+        } catch (err) {
+            console.log(err);
+        }
+        
+    })
+</script>
+</body>
+</html>

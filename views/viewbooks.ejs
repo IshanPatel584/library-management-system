@@ -1,0 +1,23 @@
+<%- include('partials/header'); -%>
+<body>
+    
+    <h1 class="availbook">All Books Available</h1>
+   <div class="books-grid">
+    <% if (books.length > 0) { %>
+        <% books.forEach(book => { %>
+            <div class="card">
+                <div class="card-content">
+                    <a class="single" href="/book/<%= book._id %>">
+                        <h3><%= book.title %></h3>
+                        <p><%= book.author %></p>
+                    </a>
+                </div>
+            </div>
+        <% }) %>
+    <% } else { %>
+        <p>There are no books to display...</p>
+    <% } %>
+</div>
+
+</body>
+</html>

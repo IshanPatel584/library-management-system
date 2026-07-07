@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body>
+    <nav>
+    <ul>
+        
+
+        <% if(user) { %>
+            <li><a href="/logout">Logout</a></li>
+            <li><a href="/view-books">Books</a></li>
+            <li><a href="/books">Add Book</a></li>
+
+            <li class="welcome">
+                Welcome, <%= user.email %>
+            </li>
+        <% } else { %>
+            <li><a href="/signup">Signup</a></li>
+            <li><a href="/login">Login</a></li>
+            <li class="welcome">Ishan's Library</li>
+            
+        <% } %>
+
+        <li><a href="/">Home</a></li>
+    </ul>
+</nav>
+</body>
