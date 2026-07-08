@@ -15,8 +15,10 @@
         <% if(user) { %>
             <li><a href="/logout">Logout</a></li>
             <li><a href="/view-books">Books</a></li>
-            <li><a href="/books">Add Book</a></li>
-
+            <% if(user.role == 'admin'){%>
+                <li><a href="/books">Add Book</a></li>
+                <li><a href="/users">View Users</a></li>
+            <% } %>
             <li class="welcome">
                 Welcome, <%= user.email %>
             </li>

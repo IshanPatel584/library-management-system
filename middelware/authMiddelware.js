@@ -33,6 +33,7 @@ const currectuser = (req,res, next) =>{
             else{
                 console.log(decodedtoken);
                 let user = await User.findById(decodedtoken.id);
+                console.log(user.role);
                 res.locals.user = user;
                 next();
             }
@@ -43,4 +44,30 @@ const currectuser = (req,res, next) =>{
     }
 };
 
-module.exports = {requireauth , currectuser};
+const requireAdmin = (req,res,next) =>{
+    const token = req.cookies.jwt;
+    if (token) {
+        jwt.verify(token , 'ishan' , async (err , decodedtoken) =>{
+            if(err){
+                console.log(err.message);
+                res.locals.user = null;
+                next();
+            }
+            else{
+                console.log(decodedtoken);
+                let user = await User.findById(decodedtoken.id);
+                if(user.role === 'admin'){
+                    next();
+                }
+                else{
+                    res.redirect('/');
+                }
+            }
+        })
+    } else {
+        res.locals.user = null;
+        next();
+    }
+}
+
+module.exports = {requireauth , currectuser , requireAdmin};

@@ -3,10 +3,10 @@ const mongoose = require('mongoose');
 const routes = require('./routes/authRoutes');
 const cookie = require('cookie-parser');
 const { requireauth, currectuser } = require('./middelware/authMiddelware');
+require('dotenv').config();
 
 const app = express();
 
-const dbURL = 'mongodb://localhost:27017/';
 
 // middleware
 app.use(express.static('public'));
@@ -17,8 +17,8 @@ app.use(cookie());
 
 app.set('view engine', 'ejs');
 
-mongoose.connect(dbURL)
-.then(() => app.listen(5000))
+mongoose.connect(process.env.MONGO_URI)
+.then(() => app.listen(process.env.PORT))
 .then(() => console.log('connected to db'))
 .catch((err) => console.log(err));
 

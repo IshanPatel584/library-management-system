@@ -43,7 +43,10 @@ const handelBookError = (err) => {
     return errors;
 }
 const createtoken = (id) =>{
-    return jwt.sign({id} , 'ishan');
+    return jwt.sign(
+    { id },
+    process.env.JWT_SECRET
+);
 }
 
 module.exports.signup_get = (req,res) => {
@@ -103,4 +106,48 @@ module.exports.logout_get = (req,res) =>{
 module.exports.view_books_get = async (req,res) => {
     const books = await Books.find();
     res.render('viewbooks', { books });
+}
+module.exports.users_get = async (req, res) => {
+    const users = await User.find();
+    res.render('users', { users });
+}
+
+module.exports.change_role_post = async (req, res) => {
+    
+    
+    try{
+        const userid = req.params.id;
+        const user = await User.findById(userid);
+
+        if (!user) {
+            return res.status(404).send("User not found");
+        }
+
+        if (user.role === "user") {
+            user.role = "admin";
+        } else {
+            user.role = "user";
+        }
+
+        await user.save();
+
+        res.redirect('/users');
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).send("Something went wrong");
+    }
+}
+
+module.exports.delete_user_post = async (req,res) =>{
+    try{
+        const userid = req.params.id;
+        const user = await User.findByIdAndDelete(userid);
+
+        res.redirect('/users');
+
+    }
+    catch(err){
+        console.log(err);
+    }
 }

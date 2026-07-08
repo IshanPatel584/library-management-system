@@ -1,0 +1,60 @@
+<%- include('partials/header'); -%>
+
+<body>
+
+    <h1 class="availbook">All Registered Users</h1>
+
+    <div class="user-grid">
+
+        <% if (users.length > 0) { %>
+
+            <% users.forEach(user => { %>
+
+                <div class="Card">
+                    <div class="Card-content">
+
+                        <h3><%= user.email %></h3>
+
+                        <p>
+                            Role :
+                            <strong><%= user.role %></strong>
+                        </p>
+
+                        <% if (user._id.toString() !== locals.user._id.toString()) { %>
+
+                        <div class="actions">
+
+                            <form action="/users/role/<%= user._id %>" method="POST">
+                                <button class="role-btn">
+                                    <% if(user.role === 'admin'){ %>
+                                        Make User
+                                    <% } else { %>
+                                        Make Admin
+                                    <% } %>
+                                </button>
+                            </form>
+
+                            <form action="/users/delete/<%= user._id %>" method="POST">
+                                <button class="delete-btn">
+                                    Delete User
+                                </button>
+                            </form>
+
+                        </div>
+                        <% } %>
+
+                    </div>
+                </div>
+
+            <% }) %>
+
+        <% } else { %>
+
+            <p>No users found.</p>
+
+        <% } %>
+
+    </div>
+
+</body>
+</html>
