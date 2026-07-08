@@ -5,7 +5,7 @@ const requireauth = (req,res,next) =>{
     const token = req.cookies.jwt;
 
     if(token){
-        jwt.verify(token , 'ishan' , (err ,decodedtoken) =>{
+        jwt.verify(token , process.env.JWT_SECRET , (err ,decodedtoken) =>{
             if(err){
                 res.redirect('/login');
             }
@@ -24,7 +24,7 @@ const currectuser = (req,res, next) =>{
     const token = req.cookies.jwt;
 
     if (token) {
-        jwt.verify(token , 'ishan' , async (err , decodedtoken) =>{
+        jwt.verify(token , process.env.JWT_SECRET , async (err , decodedtoken) =>{
             if(err){
                 console.log(err.message);
                 res.locals.user = null;
@@ -47,7 +47,7 @@ const currectuser = (req,res, next) =>{
 const requireAdmin = (req,res,next) =>{
     const token = req.cookies.jwt;
     if (token) {
-        jwt.verify(token , 'ishan' , async (err , decodedtoken) =>{
+        jwt.verify(token , process.env.JWT_SECRET , async (err , decodedtoken) =>{
             if(err){
                 console.log(err.message);
                 res.locals.user = null;
