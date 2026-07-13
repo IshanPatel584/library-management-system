@@ -3,33 +3,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>LibraryHub</title>
     <link rel="stylesheet" href="style.css">
-    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================================
+           LibraryHub — Sidebar theme
+           ============================================================ */
+        :root{
+            --primary:#4F46E5;
+            --primary-dark:#4338CA;
+            --primary-light:#818CF8;
+            --primary-soft:#EEF2FF;
+            --bg:#F8FAFC;
+            --card:#FFFFFF;
+            --border:#E7EBF3;
+            --text:#0F172A;
+            --text-muted:#64748B;
+            --danger:#EF4444;
+            --danger-bg:#FEF2F2;
+            --radius-md:12px;
+            --radius-sm:10px;
+            --shadow-md:0 8px 24px -4px rgba(15,23,42,.08), 0 2px 6px rgba(15,23,42,.04);
+            --sidebar-w:240px;
+        }
+        *{box-sizing:border-box;}
+        body{
+            margin:0;
+            font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+            background:var(--bg);
+            color:var(--text);
+            margin-left:var(--sidebar-w);
+        }
+        h1,h3{font-family:'Poppins','Inter',sans-serif;}
+
+        /* ---------- Sidebar ---------- */
+        nav{
+            width:var(--sidebar-w);
+            height:100vh;
+            position:fixed;
+            top:0;left:0;
+            background:var(--card);
+            border-right:1px solid var(--border);
+            padding:22px 14px;
+            display:flex;
+            flex-direction:column;
+            z-index:100;
+        }
+        nav::before{
+            content:"";
+        }
+        nav ul{
+            list-style:none;
+            margin:0;padding:0;
+            display:flex;
+            flex-direction:column;
+            gap:4px;
+            height:100%;
+        }
+        nav ul li{display:block;}
+
+        /* brand row — rendered via the first item's spacing */
+        nav ul::before{
+            content:"📚 LibraryHub";
+            font-family:'Poppins',sans-serif;
+            font-weight:700;
+            font-size:18px;
+            letter-spacing:-.02em;
+            padding:8px 12px 22px 12px;
+            display:block;
+        }
+
+        nav ul li a{
+            display:flex;
+            align-items:center;
+            gap:10px;
+            padding:11px 14px;
+            border-radius:var(--radius-sm);
+            color:var(--text-muted);
+            font-weight:500;
+            font-size:14.5px;
+            text-decoration:none;
+            transition:all .25s cubic-bezier(.4,0,.2,1);
+        }
+        nav ul li a:hover{
+            background:var(--primary-soft);
+            color:var(--primary);
+            transform:translateX(2px);
+        }
+        nav ul li a::before{
+            content:"";
+            width:18px;height:18px;
+            flex-shrink:0;
+            background-color:currentColor;
+            -webkit-mask-size:contain;
+            mask-size:contain;
+            -webkit-mask-repeat:no-repeat;
+            mask-repeat:no-repeat;
+            -webkit-mask-position:center;
+            mask-position:center;
+        }
+
+        /* icon per link, matched by href */
+        nav ul li a[href="/"]::before{
+            -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'/%3E%3Cpolyline points='9 22 9 12 15 12 15 22'/%3E%3C/svg%3E");
+            mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'/%3E%3Cpolyline points='9 22 9 12 15 12 15 22'/%3E%3C/svg%3E");
+        }
+        nav ul li a[href="/view-books"]::before{
+            -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 19.5A2.5 2.5 0 0 1 6.5 17H20'/%3E%3Cpath d='M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z'/%3E%3C/svg%3E");
+            mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 19.5A2.5 2.5 0 0 1 6.5 17H20'/%3E%3Cpath d='M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z'/%3E%3C/svg%3E");
+        }
+        nav ul li a[href="/books"]::before{
+            -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='12' y1='5' x2='12' y2='19'/%3E%3Cline x1='5' y1='12' x2='19' y2='12'/%3E%3C/svg%3E");
+            mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='12' y1='5' x2='12' y2='19'/%3E%3Cline x1='5' y1='12' x2='19' y2='12'/%3E%3C/svg%3E");
+        }
+        nav ul li a[href="/users"]::before{
+            -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2'/%3E%3Ccircle cx='9' cy='7' r='4'/%3E%3Cpath d='M23 21v-2a4 4 0 0 0-3-3.87'/%3E%3Cpath d='M16 3.13a4 4 0 0 1 0 7.75'/%3E%3C/svg%3E");
+            mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2'/%3E%3Ccircle cx='9' cy='7' r='4'/%3E%3Cpath d='M23 21v-2a4 4 0 0 0-3-3.87'/%3E%3Cpath d='M16 3.13a4 4 0 0 1 0 7.75'/%3E%3C/svg%3E");
+        }
+        nav ul li a[href="/login"]::before{
+            -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4'/%3E%3Cpolyline points='10 17 15 12 10 7'/%3E%3Cline x1='15' y1='12' x2='3' y2='12'/%3E%3C/svg%3E");
+            mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4'/%3E%3Cpolyline points='10 17 15 12 10 7'/%3E%3Cline x1='15' y1='12' x2='3' y2='12'/%3E%3C/svg%3E");
+        }
+        nav ul li a[href="/signup"]::before{
+            -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2'/%3E%3Ccircle cx='8.5' cy='7' r='4'/%3E%3Cline x1='20' y1='8' x2='20' y2='14'/%3E%3Cline x1='17' y1='11' x2='23' y2='11'/%3E%3C/svg%3E");
+            mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2'/%3E%3Ccircle cx='8.5' cy='7' r='4'/%3E%3Cline x1='20' y1='8' x2='20' y2='14'/%3E%3Cline x1='17' y1='11' x2='23' y2='11'/%3E%3C/svg%3E");
+        }
+        nav ul li a[href="/logout"]::before{
+            -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4'/%3E%3Cpolyline points='16 17 21 12 16 7'/%3E%3Cline x1='21' y1='12' x2='9' y2='12'/%3E%3C/svg%3E");
+            mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4'/%3E%3Cpolyline points='16 17 21 12 16 7'/%3E%3Cline x1='21' y1='12' x2='9' y2='12'/%3E%3C/svg%3E");
+        }
+
+        li:has(> a[href="/logout"]) a:hover{
+            background:var(--danger-bg);
+            color:var(--danger);
+        }
+
+        /* welcome / brand text item (no link) */
+        nav ul li.welcome{
+            margin-top:auto;
+            padding:14px 12px;
+            border-top:1px solid var(--border);
+            font-size:12.5px;
+            font-weight:600;
+            color:var(--text-muted);
+            line-height:1.5;
+        }
+
+        /* mobile */
+        @media (max-width:860px){
+            nav{width:100%;height:auto;position:relative;flex-direction:row;border-right:none;border-bottom:1px solid var(--border);}
+            nav ul{flex-direction:row;flex-wrap:wrap;align-items:center;height:auto;}
+            nav ul::before{padding:8px 12px;width:100%;}
+            nav ul li.welcome{margin-top:0;border-top:none;}
+            body{margin-left:0;}
+        }
+    </style>
 </head>
 <body>
     <nav>
     <ul>
-        
+
 
         <% if(user) { %>
-            <li><a href="/logout">Logout</a></li>
             <li><a href="/view-books">Books</a></li>
             <% if(user.role == 'admin'){%>
                 <li><a href="/books">Add Book</a></li>
                 <li><a href="/users">View Users</a></li>
             <% } %>
+            <li><a href="/">Home</a></li>
+            <li><a href="/logout">Logout</a></li>
             <li class="welcome">
-                Welcome, <%= user.email %>
-            </li>
+    Welcome,
+
+    <% if (user.username && user.username.trim()) { %>
+        <%= user.username %>
+    <% } else { %>
+        <%= user.email %>
+    <% } %>
+</li>
         <% } else { %>
+            <li><a href="/">Home</a></li>
             <li><a href="/signup">Signup</a></li>
             <li><a href="/login">Login</a></li>
             <li class="welcome">Ishan's Library</li>
-            
         <% } %>
 
-        <li><a href="/">Home</a></li>
     </ul>
 </nav>
-</body>

@@ -1,7 +1,132 @@
 <%- include('partials/header'); -%>
+
+<style>
+    .lh-page{
+        font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+        padding:32px;
+        min-height:100vh;
+        box-sizing:border-box;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+    }
+    .lh-page *{box-sizing:border-box;}
+
+    .lh-page h1.form-title{
+        font-family:'Poppins',sans-serif;
+        font-size:22px;
+        font-weight:700;
+        letter-spacing:-.01em;
+        color:var(--text, #0F172A);
+        margin-bottom:4px;
+        align-self:flex-start;
+    }
+    .lh-sub{
+        color:var(--text-muted, #64748B);
+        font-size:13.5px;
+        margin-bottom:22px;
+        align-self:flex-start;
+    }
+
+    .container{
+        width:100%;
+        max-width:420px;
+        background:var(--card, #fff);
+        border:1px solid var(--border, #E7EBF3);
+        border-radius:var(--radius-lg, 16px);
+        padding:28px;
+        box-shadow:var(--shadow-sm, 0 1px 2px rgba(15,23,42,.04));
+        transition:all .3s cubic-bezier(.4,0,.2,1);
+        margin-top:4vh;
+    }
+    .container:hover{
+        box-shadow:var(--shadow-md, 0 8px 24px -4px rgba(15,23,42,.08));
+    }
+
+    .container form{
+        display:flex;
+        flex-direction:column;
+        gap:14px;
+    }
+
+    .container h1{
+        font-family:'Poppins',sans-serif;
+        font-size:18px;
+        font-weight:700;
+        color:var(--text, #0F172A);
+        margin:0 0 6px;
+    }
+
+    .container label{
+        font-size:12.5px;
+        font-weight:600;
+        color:var(--text-muted, #64748B);
+        margin-bottom:-6px;
+    }
+
+    .container input{
+        width:100%;
+        padding:11px 14px;
+        border:1px solid var(--border, #E7EBF3) !important;
+        border-radius:var(--radius-sm, 10px);
+        font-size:14px;
+        font-family:inherit;
+        color:var(--text, #0F172A) !important;
+        background:var(--bg, #F8FAFC) !important;
+        transition:all .2s cubic-bezier(.4,0,.2,1);
+    }
+    .container input:focus{
+        outline:none;
+        border-color:var(--primary, #4F46E5) !important;
+        background:#fff !important;
+        box-shadow:0 0 0 4px var(--primary-soft, #EEF2FF);
+    }
+
+    .container .error{
+        font-size:12px;
+        font-weight:500;
+        color:var(--danger, #EF4444) !important;
+        min-height:14px;
+        margin-top:-8px;
+    }
+
+    .container button{
+        margin-top:6px;
+        padding:12px 18px;
+        border:none !important;
+        border-radius:var(--radius-sm, 10px);
+        background:linear-gradient(135deg, var(--primary, #4F46E5), var(--primary-dark, #4338CA)) !important;
+        color:#fff !important;
+        font-size:14.5px;
+        font-weight:600;
+        font-family:inherit;
+        cursor:pointer;
+        box-shadow:0 4px 14px -2px rgba(79,70,229,.45);
+        transition:all .2s cubic-bezier(.4,0,.2,1);
+    }
+    .container button:hover{
+        transform:translateY(-2px);
+        box-shadow:0 8px 20px -4px rgba(79,70,229,.55);
+    }
+    .container button:active{
+        transform:scale(.97);
+    }
+
+    @media (max-width:700px){
+        .lh-page{padding:20px;}
+        .container{padding:22px;margin-top:2vh;}
+    }
+</style>
+
+<div class="lh-page">
+    <h1 class="form-title">Sign Up</h1>
+    <p class="lh-sub">Create an account to start borrowing books.</p>
+
     <div class="container">
         <form>
-        <h1>Sign Up</h1>
+        <h1>Create Account</h1>
+        <label for="text">Username :</label>
+        <input type="text" name="username" required>
         <label for="email">Email :</label>
         <input type="text" name="email" required>
         <div class="email error"></div>
@@ -11,6 +136,8 @@
         <button>Sign Up</button>
     </form>
     </div>
+</div>
+
 <script>
     const form = document.querySelector('form');
     const emailerror = document.querySelector('.email.error');
@@ -23,12 +150,13 @@
         passworderror.textContent = '';
 
         const email = form.email.value;
+        const username = form.username.value;
         const password = form.password.value;
 
         try {
             const res = await fetch('/signup' , {
                 method : "POST",
-                body : JSON.stringify({email,password}),
+                body : JSON.stringify({username,email,password}),
                 headers : {'Content-Type' : 'application/json'}
             });
 

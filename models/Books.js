@@ -13,6 +13,11 @@ const bookSchema = new mongoose.Schema({
         type:Number,
         required:[true , 'Please enter the ISBN'],
         unique:true
+    },
+    quantity:{
+        type:Number,
+        required:true,
+        min:0
     }
 });
 

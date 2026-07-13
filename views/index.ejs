@@ -1,9 +1,380 @@
 <%- include('partials/header'); -%>
-<body>
-    <div class="text">
-        
-        <h1>Welcome to Our Library</h1>
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ratione vel dolorum quod incidunt, aut tempora nostrum laborum mollitia dicta reiciendis! Sequi earum eaque ex optio qui maiores distinctio itaque laborum.</p>
+
+<style>
+  /* ============================================================
+     LibraryHub — Dashboard theme
+     Scoped with lh- prefix so it won't clash with existing CSS
+     ============================================================ */
+  .lh-wrap{
+    --primary:#4F46E5;
+    --primary-dark:#4338CA;
+    --primary-light:#818CF8;
+    --primary-soft:#EEF2FF;
+    --bg:#F8FAFC;
+    --card:#FFFFFF;
+    --border:#E7EBF3;
+    --text:#0F172A;
+    --text-muted:#64748B;
+    --text-faint:#94A3B8;
+    --success:#10B981; --success-bg:#ECFDF5; --success-bd:#A7F3D0;
+    --warning:#F59E0B; --warning-bg:#FFFBEB; --warning-bd:#FDE68A;
+    --danger:#EF4444;  --danger-bg:#FEF2F2;  --danger-bd:#FECACA;
+    --info:#3B82F6;    --info-bg:#EFF6FF;    --info-bd:#BFDBFE;
+    --radius-lg:16px; --radius-md:12px; --radius-sm:10px; --radius-pill:999px;
+    --shadow-sm:0 1px 2px rgba(15,23,42,.04);
+    --shadow-md:0 8px 24px -4px rgba(15,23,42,.08), 0 2px 6px rgba(15,23,42,.04);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    color:var(--text);
+    background:var(--bg);
+    padding:32px;
+    min-height:100vh;
+    box-sizing:border-box;
+  }
+  .lh-wrap *{box-sizing:border-box;}
+  .lh-wrap h1,.lh-wrap h3{font-family:'Poppins','Inter',sans-serif;}
+
+  /* ---------- Guest page ---------- */
+  .lh-guest{
+    max-width:520px;margin:8vh auto 0;text-align:center;
+    background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);
+    padding:48px 36px;box-shadow:var(--shadow-md);
+  }
+  .lh-guest .lh-mark{
+    width:56px;height:56px;border-radius:14px;margin:0 auto 20px;
+    background:linear-gradient(135deg,var(--primary),var(--primary-light));
+    display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px -6px rgba(79,70,229,.5);
+  }
+  .lh-guest .lh-mark svg{width:28px;height:28px;stroke:#fff;fill:none;stroke-width:2;}
+  .lh-guest h1{font-size:24px;font-weight:700;margin-bottom:10px;letter-spacing:-.01em;}
+  .lh-guest p{color:var(--text-muted);font-size:14.5px;line-height:1.6;}
+
+  /* ---------- Section heading ---------- */
+  .lh-wrap > h1{font-size:22px;font-weight:700;margin-bottom:22px;letter-spacing:-.01em;}
+
+  /* ---------- Stat cards (admin + user) ---------- */
+  .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:36px;}
+  .dashboard{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .stat-card, .dashboard .card{
+    background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);
+    padding:22px;box-shadow:var(--shadow-sm);transition:all .3s cubic-bezier(.4,0,.2,1);
+    position:relative;overflow:hidden;
+  }
+  .stat-card:hover, .dashboard .card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);}
+  .stat-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+  .stat-icon{
+    width:44px;height:44px;border-radius:var(--radius-sm);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .stat-icon svg{width:21px;height:21px;stroke-width:2;fill:none;}
+  .icon-indigo{background:var(--primary-soft);color:var(--primary);}
+  .icon-orange{background:var(--warning-bg);color:var(--warning);}
+  .icon-green{background:var(--success-bg);color:var(--success);}
+  .icon-blue{background:var(--info-bg);color:var(--info);}
+  .stat-trend{font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:var(--radius-pill);white-space:nowrap;}
+  .stat-num{font-size:28px;font-weight:700;font-family:'Poppins',sans-serif;letter-spacing:-.02em;}
+  .stat-label{font-size:13px;color:var(--text-muted);margin-top:4px;}
+
+  .dashboard .card h3{
+    font-size:13px;font-weight:600;color:var(--text-muted);text-transform:uppercase;
+    letter-spacing:.04em;margin-bottom:12px;
+  }
+  .dashboard .card p{
+    font-size:32px;font-weight:700;font-family:'Poppins',sans-serif;letter-spacing:-.02em;
+  }
+
+  /* ---------- Section head with link ---------- */
+  .section-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px;gap:16px;flex-wrap:wrap;}
+  .section-head h1{margin-bottom:4px !important;}
+  .view-all{font-size:13px;font-weight:600;color:var(--primary);text-decoration:none;display:inline-flex;align-items:center;gap:4px;}
+  .view-all svg{width:14px;height:14px;}
+
+  /* ---------- User dashboard ---------- */
+  .availbook{font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:-.01em;}
+  .lh-sub{color:var(--text-muted);font-size:13.5px;margin-bottom:22px;}
+
+  .user-grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;
+  }
+  .Card{
+    background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-sm);transition:all .3s cubic-bezier(.4,0,.2,1);overflow:hidden;
+    display:flex;gap:16px;padding:18px;
+  }
+  .Card:hover{transform:translateY(-5px);box-shadow:var(--shadow-md);}
+
+  .book-cover{
+    width:76px;height:106px;border-radius:10px;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;
+    box-shadow:0 6px 14px -4px rgba(0,0,0,.25);
+  }
+  .book-cover::after{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:rgba(0,0,0,.18);}
+  .book-cover svg{width:26px;height:26px;stroke:rgba(255,255,255,.9);fill:none;stroke-width:2;}
+
+  .Card-content{flex:1;min-width:0;display:flex;flex-direction:column;padding:0;}
+  .Card-content h3{font-size:14.5px;font-weight:600;margin:0 0 2px;line-height:1.3;}
+  .Card-content > p.author-line{font-size:12.5px;color:var(--text-muted);margin:0 0 10px;}
+
+  .meta-row{display:flex;gap:16px;margin-bottom:10px;flex-wrap:wrap;}
+  .meta-item{font-size:11.5px;}
+  .meta-item .k{color:var(--text-faint);display:block;margin-bottom:2px;}
+  .meta-item .v{font-weight:600;color:var(--text);}
+
+  .progress-track{height:5px;border-radius:99px;background:var(--border);overflow:hidden;margin-bottom:12px;}
+  .progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--primary-light),var(--primary));}
+  .progress-fill.lh-status-overdue{background:linear-gradient(90deg,#F87171,var(--danger));}
+  .progress-fill.lh-status-returned{background:linear-gradient(90deg,#6EE7B7,var(--success));}
+
+  .borrow-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;}
+
+  /* status badge coloring */
+  .lh-status{
+    display:inline-flex;align-items:center;gap:5px;
+    font-size:11.5px;font-weight:600;padding:3px 10px;border-radius:var(--radius-pill);
+    border:1px solid transparent;text-transform:capitalize;
+  }
+  .lh-status-dot{width:6px;height:6px;border-radius:50%;background:currentColor;}
+  .lh-status-borrowed{background:var(--info-bg);color:var(--info);border-color:var(--info-bd);}
+  .lh-status-due{background:var(--warning-bg);color:var(--warning);border-color:var(--warning-bd);}
+  .lh-status-returned{background:var(--success-bg);color:var(--success);border-color:var(--success-bd);}
+  .lh-status-overdue{background:var(--danger-bg);color:var(--danger);border-color:var(--danger-bd);}
+
+  .warning-message{
+    background:var(--warning-bg);border:1px solid var(--warning-bd);color:#92400E;
+    font-size:12.5px;padding:8px 12px;border-radius:var(--radius-sm);margin-bottom:12px;
+  }
+
+  .return-btn{
+    padding:9px 16px;border:none;border-radius:var(--radius-sm);
+    background:var(--success);color:#fff;font-weight:600;font-size:12.5px;cursor:pointer;
+    box-shadow:0 4px 14px -2px rgba(16,185,129,.4);
+    transition:all .2s cubic-bezier(.4,0,.2,1);font-family:inherit;white-space:nowrap;
+  }
+  .return-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px -4px rgba(16,185,129,.5);background:#0ea575;}
+  .return-btn:active{transform:scale(.97);}
+  .return-btn:disabled{background:var(--border);color:var(--text-faint);box-shadow:none;cursor:default;transform:none;}
+
+  .lh-empty{
+    grid-column:1/-1;text-align:center;padding:48px 20px;color:var(--text-muted);
+    background:var(--card);border:1px dashed var(--border);border-radius:var(--radius-lg);
+    font-size:14px;
+  }
+
+  @media (max-width:1024px){
+    .stat-grid{grid-template-columns:repeat(2,1fr);}
+  }
+  @media (max-width:700px){
+    .lh-wrap{padding:20px;}
+    .dashboard{grid-template-columns:1fr;}
+    .stat-grid{grid-template-columns:1fr;}
+    .lh-guest{margin-top:4vh;padding:36px 24px;}
+    .Card{flex-direction:column;}
+    .book-cover{width:100%;height:110px;}
+  }
+</style>
+
+<div class="lh-wrap">
+
+<% if (!user) { %>
+
+    <!-- Guest Page -->
+    <div class="lh-guest">
+        <div class="lh-mark">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        </div>
+        <h1>Welcome to Library Management System</h1>
+        <p>Please login or signup to borrow books.</p>
     </div>
+
+<% } else if (user.role === 'admin') { %>
+
+    <!-- Admin Dashboard -->
+    <h1>Admin Dashboard</h1>
+
+    <div class="dashboard">
+
+        <div class="card">
+            <h3>Total Users</h3>
+            <p><%= totalUser %></p>
+        </div>
+
+        <div class="card">
+            <h3>Total Books</h3>
+            <p><%= totalBook %></p>
+        </div>
+
+        <div class="card">
+            <h3>Books Borrowed</h3>
+            <p><%= totalBorrowed %></p>
+        </div>
+
+    </div>
+
+<% } else { %>
+
+    <!-- Normal User Dashboard -->
+
+    <%
+        const today = new Date();
+        // Derive per-borrow visual status + progress from real borrow/due dates,
+        // without touching borrow.status (still used below to show the Return form).
+        const enriched = borrowStats.map(borrow => {
+            let visual = 'returned';
+            let progress = 100;
+
+            if (borrow.status !== 'returned') {
+                const total = borrow.dueDate - borrow.borrowdate;
+                const elapsed = today - borrow.borrowdate;
+                progress = total > 0 ? Math.min(100, Math.max(0, Math.round((elapsed / total) * 100))) : 0;
+
+                const daysLeft = Math.ceil((borrow.dueDate - today) / 86400000);
+                if (daysLeft < 0) visual = 'overdue';
+                else if (daysLeft <= 3) visual = 'due';
+                else visual = 'borrowed';
+            }
+            return { borrow, visual, progress };
+        });
+
+
+        const activeCount = enriched.filter(e => e.visual === 'borrowed').length;
+        const dueSoonCount = enriched.filter(e => e.visual === 'due' || e.visual === 'overdue').length;
+        const returnedCount = borrowStats.filter(
+    b => b.status === 'returned'
+).length;
+        const hues = [245,190,25,340,160,270,10,205,90,320,55,225,300,140,15];
+    %>
+
+    <div class="stat-grid">
+        <div class="stat-card">
+            <div class="stat-top">
+                <div class="stat-icon icon-indigo"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+            </div>
+            <div class="stat-num">
+    <%= borrowStats.filter(b => b.status === 'borrowed').length %>
+</div>
+            <div class="stat-label">Borrowed Books</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-top">
+                <div class="stat-icon icon-orange"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg></div>
+                <% if (dueSoonCount > 0) { %><span class="stat-trend" style="background:var(--warning-bg);color:var(--warning);">Act soon</span><% } %>
+            </div>
+            <div class="stat-num"><%= dueSoonCount %></div>
+            <div class="stat-label">Due Soon</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-top">
+                <div class="stat-icon icon-green"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+            </div>
+            <div class="stat-num"><%= returnedCount %></div>
+            <div class="stat-label">Returned</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-top">
+                <div class="stat-icon icon-blue"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg></div>
+            </div>
+            <div class="stat-num">₹<%= typeof walletBalance !== 'undefined' ? walletBalance : 0 %></div>
+            <div class="stat-label">Wallet Balance</div>
+        </div>
+    </div>
+
+    <div class="section-head">
+        <div>
+            <h1 class="availbook">Currently Borrowed Books</h1>
+            <p class="lh-sub">Track due dates and return your books right from here.</p>
+        </div>
+        <a class="view-all" href="/view-books">Browse catalog
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+    </div>
+
+    <div class="user-grid">
+
+        <% if (borrowdata.length > 0) { %>
+
+    <% borrowdata.forEach((borrow, i) => { %>
+
+        <%
+            const hue = hues[i % hues.length];
+
+            const total = borrow.dueDate - borrow.borrowdate;
+            const elapsed = today - borrow.borrowdate;
+            const progress = total > 0
+                ? Math.min(100, Math.max(0, Math.round((elapsed / total) * 100)))
+                : 0;
+
+            const daysLeft = Math.ceil((borrow.dueDate - today) / 86400000);
+
+            let visual = 'borrowed';
+            if (daysLeft < 0) visual = 'overdue';
+            else if (daysLeft <= 3) visual = 'due';
+        %>
+
+                <div class="Card">
+
+                    <div class="book-cover" style="background:linear-gradient(150deg, hsl(<%= hue %> 70% 58%), hsl(<%= (hue + 35) % 360 %> 65% 42%))">
+                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                    </div>
+
+                    <div class="Card-content">
+
+                        <h3><%= borrow.book.title %></h3>
+                        <p class="author-line">Author: <%= borrow.book.author %></p>
+
+                        <div class="meta-row">
+                            <div class="meta-item">
+                                <span class="k">Borrow Date</span>
+                                <span class="v"><%= borrow.borrowdate.toDateString() %></span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="k">Due Date</span>
+                                <span class="v"><%= borrow.dueDate.toDateString() %></span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="k">Return Date</span>
+                                <span class="v"><%= borrow.status === 'returned' ? (borrow.returnDate ? borrow.returnDate.toDateString() : 'Returned') : 'Pending' %></span>
+                            </div>
+                        </div>
+
+                        <div class="progress-track">
+                            <div class="progress-fill lh-status-<%= visual %>" style="width:<%= progress %>%"></div>
+                        </div>
+
+                        <% if (borrow.status === 'borrowed' && borrow.message) { %>
+                            <p class="warning-message"><%= borrow.message %></p>
+                        <% } %>
+
+                        <div class="borrow-foot">
+                            <span class="lh-status lh-status-<%= visual %>">
+                                <span class="lh-status-dot"></span><%= visual === 'due' ? 'Due Soon' : visual %>
+                            </span>
+
+                            <% if (borrow.status === 'borrowed') { %>
+                                <form action="/return/<%= borrow._id %>" method="POST">
+                                    <button class="return-btn">Return Book</button>
+                                </form>
+                            <% } else { %>
+                                <button class="return-btn" disabled>Returned</button>
+                            <% } %>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            <% }) %>
+
+        <% } else { %>
+
+            <p class="lh-empty">You have not borrowed any books.</p>
+
+        <% } %>
+
+    </div>
+
+<% } %>
+
+</div>
+
 </body>
+
 </html>

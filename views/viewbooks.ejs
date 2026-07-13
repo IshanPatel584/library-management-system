@@ -1,23 +1,311 @@
 <%- include('partials/header'); -%>
-<body>
-    
+
+<style>
+    .lh-page{
+        font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+        padding:32px;
+        min-height:100vh;
+        box-sizing:border-box;
+    }
+    .lh-page *{box-sizing:border-box;}
+
+    .lh-page h1.availbook{
+        font-family:'Poppins',sans-serif;
+        font-size:22px;
+        font-weight:700;
+        letter-spacing:-.01em;
+        color:var(--text, #0F172A);
+        margin-bottom:4px;
+    }
+    .lh-sub{
+        color:var(--text-muted, #64748B);
+        font-size:13.5px;
+        margin-bottom:22px;
+    }
+
+    /* ---------- Search + filter bar ---------- */
+    .filter-bar{
+        display:flex;
+        gap:12px;
+        flex-wrap:wrap;
+        align-items:center;
+        margin-bottom:22px;
+    }
+    .search-wrap{
+        position:relative;
+        flex:1;
+        min-width:220px;
+        max-width:340px;
+    }
+    .search-wrap svg{
+        position:absolute;left:13px;top:50%;transform:translateY(-50%);
+        width:16px;height:16px;stroke:var(--text-faint, #94A3B8);
+    }
+    .search-wrap input{
+        width:100%;
+        padding:10px 14px 10px 38px;
+        border:1px solid var(--border, #E7EBF3);
+        border-radius:999px;
+        background:var(--card, #fff);
+        font-size:13.5px;
+        font-family:inherit;
+        color:var(--text, #0F172A);
+        transition:all .2s cubic-bezier(.4,0,.2,1);
+    }
+    .search-wrap input:focus{
+        outline:none;
+        border-color:var(--primary, #4F46E5);
+        box-shadow:0 0 0 4px var(--primary-soft, #EEF2FF);
+    }
+
+    .chip-group{display:flex;gap:8px;flex-wrap:wrap;}
+    .chip{
+        padding:8px 15px;
+        border-radius:999px;
+        font-size:13px;
+        font-weight:600;
+        font-family:inherit;
+        border:1px solid var(--border, #E7EBF3);
+        background:var(--card, #fff);
+        color:var(--text-muted, #64748B);
+        cursor:pointer;
+        transition:all .2s cubic-bezier(.4,0,.2,1);
+    }
+    .chip:hover{border-color:var(--primary-light, #818CF8);color:var(--primary, #4F46E5);}
+    .chip.active{
+        background:linear-gradient(135deg, var(--primary, #4F46E5), var(--primary-dark, #4338CA));
+        color:#fff;
+        border-color:transparent;
+    }
+
+    /* ---------- Books grid ---------- */
+    .books-grid{
+        display:grid;
+        grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
+        gap:18px;
+    }
+    .card{
+        background:var(--card, #fff);
+        border:1px solid var(--border, #E7EBF3);
+        border-radius:var(--radius-lg, 16px);
+        padding:16px;
+        display:flex;
+        flex-direction:column;
+        box-shadow:var(--shadow-sm, 0 1px 2px rgba(15,23,42,.04));
+        transition:all .3s cubic-bezier(.4,0,.2,1);
+    }
+    .card:hover{
+        transform:translateY(-6px);
+        box-shadow:var(--shadow-md, 0 8px 24px -4px rgba(15,23,42,.08));
+    }
+    .card-content{display:flex;flex-direction:column;flex:1;}
+
+    .card-content a.single{
+        text-decoration:none;
+        color:inherit;
+        display:flex;
+        flex-direction:column;
+    }
+
+    .book-cover{
+        width:100%;
+        height:150px;
+        border-radius:12px;
+        margin-bottom:12px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        position:relative;
+        overflow:hidden;
+        box-shadow:0 6px 14px -4px rgba(0,0,0,.2);
+    }
+    .book-cover::after{
+        content:"";
+        position:absolute;left:0;top:0;bottom:0;width:6px;
+        background:rgba(0,0,0,.18);
+    }
+    .book-cover svg{width:32px;height:32px;stroke:rgba(255,255,255,.9);fill:none;stroke-width:2;}
+
+    .card-content h3{
+        font-size:14px;
+        font-weight:600;
+        color:var(--text, #0F172A);
+        margin:0 0 2px;
+        line-height:1.3;
+    }
+    .card-content > a.single > p{
+        font-size:12.5px;
+        color:var(--text-muted, #64748B);
+        margin:0 0 8px;
+    }
+    .book-meta-row{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        margin-bottom:8px;
+    }
+    .cat-tag{
+        font-size:11px;
+        color:var(--text-muted, #64748B);
+        background:var(--bg, #F8FAFC);
+        padding:3px 8px;
+        border-radius:6px;
+    }
+    .stars{
+        display:flex;
+        align-items:center;
+        gap:4px;
+        font-size:12px;
+        color:var(--text-muted, #64748B);
+    }
+    .stars svg{width:13px;height:13px;fill:#F59E0B;stroke:#F59E0B;}
+
+    .badge{
+        display:inline-flex;
+        align-items:center;
+        gap:5px;
+        font-size:11.5px;
+        font-weight:600;
+        padding:4px 10px;
+        border-radius:999px;
+        border:1px solid transparent;
+        width:fit-content;
+        margin-bottom:10px;
+    }
+    .badge-green{background:var(--success-bg, #ECFDF5); color:var(--success, #10B981); border-color:var(--success-bd, #A7F3D0);}
+    .badge-red{background:var(--danger-bg, #FEF2F2); color:var(--danger, #EF4444); border-color:var(--danger-bd, #FECACA);}
+
+    .card-content form{margin-top:auto;}
+    .borrow{
+        width:100%;
+        padding:10px 14px;
+        border:none;
+        border-radius:var(--radius-sm, 10px);
+        background:linear-gradient(135deg, var(--primary, #4F46E5), var(--primary-dark, #4338CA)) !important;
+        color:#000;
+        font-size:13.5px;
+        font-weight:600;
+        font-family:inherit;
+        cursor:pointer;
+        box-shadow:0 4px 14px -2px rgba(79,70,229,.4);
+        transition:all .2s cubic-bezier(.4,0,.2,1);
+    }
+    .borrow:hover{transform:translateY(-2px);box-shadow:0 8px 20px -4px rgba(79,70,229,.5);}
+
+    .lh-empty{
+        grid-column:1/-1;
+        text-align:center;
+        padding:48px 20px;
+        color:var(--text-muted, #64748B);
+        background:var(--card, #fff);
+        border:1px dashed var(--border, #E7EBF3);
+        border-radius:var(--radius-lg, 16px);
+        font-size:14px;
+    }
+
+    @media (max-width:700px){
+        .lh-page{padding:20px;}
+        .filter-bar{flex-direction:column;align-items:stretch;}
+        .search-wrap{max-width:none;}
+    }
+</style>
+<%
+            const hues = [245,190,25,340,160,270,10,205,90,320,55,225,300,140,15];
+            const categories = ["All", ...new Set(books.map(b => b.category || "General"))];
+        %>
+<div class="lh-page">
     <h1 class="availbook">All Books Available</h1>
-   <div class="books-grid">
+    <p class="lh-sub"><%= books.length %> titles in the library.</p>
+
     <% if (books.length > 0) { %>
-        <% books.forEach(book => { %>
-            <div class="card">
-                <div class="card-content">
-                    <a class="single" href="/book/<%= book._id %>">
-                        <h3><%= book.title %></h3>
-                        <p><%= book.author %></p>
-                    </a>
-                </div>
+        
+
+        <div class="filter-bar">
+            <div class="search-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" id="bookSearch" placeholder="Search by title or author...">
             </div>
-        <% }) %>
-    <% } else { %>
-        <p>There are no books to display...</p>
+            <div class="chip-group" id="categoryChips">
+                <% categories.forEach((cat, i) => { %>
+                    <button type="button" class="chip <%= i === 0 ? 'active' : '' %>" data-cat="<%= cat %>"><%= cat %></button>
+                <% }) %>
+            </div>
+        </div>
     <% } %>
+
+    <div class="books-grid" id="booksGrid">
+        <% if (books.length > 0) { %>
+            <% books.forEach((book, i) => { %>
+                <%
+                    const category = book.category || "General";
+                    const rating = book.rating || 4.5;
+                    const inStock = book.quantity > 0;
+                    const hue = (i * 35) % 360;
+                %>
+                <div class="card" data-title="<%= book.title.toLowerCase() %>" data-author="<%= book.author.toLowerCase() %>" data-category="<%= category %>">
+                    <div class="card-content">
+                        <a class="single" href="/book/<%= book._id %>">
+                            <div class="book-cover" style="background:linear-gradient(150deg, hsl(<%= hue %> 70% 58%), hsl(<%= (hue + 35) % 360 %> 65% 42%))">
+                                <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                            </div>
+                            <h3><%= book.title %></h3>
+                            <p><%= book.author %></p>
+                            <div class="book-meta-row">
+                                <span class="cat-tag"><%= category %></span>
+                                <span class="stars">
+                                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+                                    <%= rating %>
+                                </span>
+                            </div>
+                            <span class="badge <%= inStock ? 'badge-green' : 'badge-red' %>">
+                                <%= inStock ? 'Available Copies: ' + book.quantity : 'Out of Stock' %>
+                            </span>
+                        </a>
+
+                        <% if (user && user.role !== 'admin' && inStock) { %>
+    <form action="/borrow/<%= book._id %>" method="POST">
+        <button class="borrow">Borrow</button>
+    </form>
+<% } %>
+                    </div>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <p class="lh-empty">There are no books to display...</p>
+        <% } %>
+    </div>
 </div>
+
+<script>
+    const searchInput = document.getElementById('bookSearch');
+    const chips = document.querySelectorAll('.chip');
+    const cards = document.querySelectorAll('.card');
+    let activeCategory = 'All';
+
+    function applyFilters(){
+        if (!searchInput) return;
+        const term = searchInput.value.trim().toLowerCase();
+
+        cards.forEach(card => {
+            const matchesCategory = activeCategory === 'All' || card.dataset.category === activeCategory;
+            const matchesSearch = card.dataset.title.includes(term) || card.dataset.author.includes(term);
+            card.style.display = (matchesCategory && matchesSearch) ? '' : 'none';
+        });
+    }
+
+    if (searchInput) {
+        searchInput.addEventListener('input', applyFilters);
+    }
+
+    chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+            chips.forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+            activeCategory = chip.dataset.cat;
+            applyFilters();
+        });
+    });
+</script>
 
 </body>
 </html>

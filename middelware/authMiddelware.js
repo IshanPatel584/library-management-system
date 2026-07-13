@@ -35,6 +35,7 @@ const currectuser = (req,res, next) =>{
                 let user = await User.findById(decodedtoken.id);
                 console.log(user.role);
                 res.locals.user = user;
+                req.user = user;
                 next();
             }
         })

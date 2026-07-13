@@ -6,6 +6,8 @@ const {requireAdmin} = require('../middelware/authMiddelware');
 
 const routes = Router();
 
+routes.get('/', authcontroller.home_get);
+
 routes.get('/signup' , authcontroller.signup_get);
 routes.post('/signup' , authcontroller.signup_post);
 routes.get('/login' ,authcontroller.login_get);
@@ -18,5 +20,8 @@ routes.get('/view-books' , requireauth ,authcontroller.view_books_get);
 routes.get('/users', requireAdmin, authcontroller.users_get);
 routes.post('/users/delete/:id', requireAdmin, authcontroller.delete_user_post);
 routes.post('/users/role/:id', requireAdmin, authcontroller.change_role_post);
+
+routes.post('/borrow/:id', requireauth, authcontroller.borrow_post);
+routes.post('/return/:id', requireauth, authcontroller.return_post);
 
 module.exports = routes;

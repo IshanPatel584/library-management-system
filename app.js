@@ -23,9 +23,7 @@ mongoose.connect(process.env.MONGO_URI)
 .catch((err) => console.log(err));
 
 app.use(currectuser);
-app.get('/' , (req,res) =>{
-    res.render('index');
-});
+
 
 
 

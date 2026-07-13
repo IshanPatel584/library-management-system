@@ -1,0 +1,55 @@
+Date : 2026-07-10 00:24:29
+Directory : c:\Users\ISHAN\Desktop\own
+Total : 18 files,  2478 codes, 6 comments, 246 blanks, all 2730 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| JSON       |          2 |      1,478 |          0 |          1 |      1,479 |
+| JavaScript |          7 |        416 |          3 |         87 |        506 |
+| HTML       |          7 |        318 |          3 |        106 |        427 |
+| PostCSS    |          1 |        201 |          0 |         27 |        228 |
+| Markdown   |          1 |         65 |          0 |         25 |         90 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++---------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                    | files      | code       | comment    | blank      | total      |
++---------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                       |         18 |      2,478 |          6 |        246 |      2,730 |
+| . (Files)                                               |          4 |      1,560 |          2 |         37 |      1,599 |
+| controlles                                              |          1 |        220 |          1 |         49 |        270 |
+| middelware                                              |          1 |         67 |          0 |          7 |         74 |
+| models                                                  |          3 |         92 |          0 |         13 |        105 |
+| public                                                  |          1 |        201 |          0 |         27 |        228 |
+| routes                                                  |          1 |         20 |          0 |          7 |         27 |
+| views                                                   |          7 |        318 |          3 |        106 |        427 |
+| views (Files)                                           |          6 |        289 |          3 |        100 |        392 |
+| views\partials                                          |          1 |         29 |          0 |          6 |         35 |
++---------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++---------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                | language   | code       | comment    | blank      | total      |
++---------------------------------------------------------+------------+------------+------------+------------+------------+
+| c:\Users\ISHAN\Desktop\own\README.md                    | Markdown   |         65 |          0 |         25 |         90 |
+| c:\Users\ISHAN\Desktop\own\app.js                       | JavaScript |         17 |          2 |         11 |         30 |
+| c:\Users\ISHAN\Desktop\own\controlles\authControlles.js | JavaScript |        220 |          1 |         49 |        270 |
+| c:\Users\ISHAN\Desktop\own\middelware\authMiddelware.js | JavaScript |         67 |          0 |          7 |         74 |
+| c:\Users\ISHAN\Desktop\own\models\Books.js              | JavaScript |         23 |          0 |          3 |         26 |
+| c:\Users\ISHAN\Desktop\own\models\Borrow.js             | JavaScript |         27 |          0 |          3 |         30 |
+| c:\Users\ISHAN\Desktop\own\models\User.js               | JavaScript |         42 |          0 |          7 |         49 |
+| c:\Users\ISHAN\Desktop\own\package-lock.json            | JSON       |      1,442 |          0 |          1 |      1,443 |
+| c:\Users\ISHAN\Desktop\own\package.json                 | JSON       |         36 |          0 |          0 |         36 |
+| c:\Users\ISHAN\Desktop\own\public\style.css             | PostCSS    |        201 |          0 |         27 |        228 |
+| c:\Users\ISHAN\Desktop\own\routes\authRoutes.js         | JavaScript |         20 |          0 |          7 |         27 |
+| c:\Users\ISHAN\Desktop\own\views\Books.ejs              | HTML       |         59 |          0 |          9 |         68 |
+| c:\Users\ISHAN\Desktop\own\views\index.ejs              | HTML       |         72 |          3 |         47 |        122 |
+| c:\Users\ISHAN\Desktop\own\views\login.ejs              | HTML       |         45 |          0 |          9 |         54 |
+| c:\Users\ISHAN\Desktop\own\views\partials\header.ejs    | HTML       |         29 |          0 |          6 |         35 |
+| c:\Users\ISHAN\Desktop\own\views\signup.ejs             | HTML       |         44 |          0 |          8 |         52 |
+| c:\Users\ISHAN\Desktop\own\views\users.ejs              | HTML       |         40 |          0 |         20 |         60 |
+| c:\Users\ISHAN\Desktop\own\views\viewbooks.ejs          | HTML       |         29 |          0 |          7 |         36 |
+| Total                                                   |            |      2,478 |          6 |        246 |      2,730 |
++---------------------------------------------------------+------------+------------+------------+------------+------------+

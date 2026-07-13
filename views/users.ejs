@@ -1,24 +1,169 @@
 <%- include('partials/header'); -%>
 
-<body>
+<style>
+    .lh-page{
+        font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+        padding:32px;
+        min-height:100vh;
+        box-sizing:border-box;
+    }
+    .lh-page *{box-sizing:border-box;}
 
+    .lh-page h1.availbook{
+        font-family:'Poppins',sans-serif;
+        font-size:22px;
+        font-weight:700;
+        letter-spacing:-.01em;
+        color:var(--text, #0F172A);
+        margin-bottom:4px;
+    }
+    .lh-sub{
+        color:var(--text-muted, #64748B);
+        font-size:13.5px;
+        margin-bottom:22px;
+    }
+
+    /* ---------- Users grid ---------- */
+    .users-grid{
+        display:grid;
+        grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
+        gap:18px;
+    }
+    .Cards{
+        background:var(--card, #fff);
+        border:1px solid var(--border, #E7EBF3);
+        border-radius:var(--radius-lg, 16px);
+        padding:20px;
+        box-shadow:var(--shadow-sm, 0 1px 2px rgba(15,23,42,.04));
+        transition:all .3s cubic-bezier(.4,0,.2,1);
+    }
+    .Cards:hover{
+        transform:translateY(-5px);
+        box-shadow:var(--shadow-md, 0 8px 24px -4px rgba(15,23,42,.08));
+    }
+    .Cards-content{display:flex;flex-direction:column;}
+
+    .user-avatar{
+        width:42px;height:42px;border-radius:50%;
+        display:flex;align-items:center;justify-content:center;
+        background:linear-gradient(135deg, var(--primary, #4F46E5), var(--primary-light, #818CF8));
+        color:#fff !important;
+        font-weight:600;font-size:15px;
+        margin-bottom:14px;
+        text-transform:uppercase;
+    }
+
+    .Cards-content h3{
+        font-size:14.5px;
+        font-weight:600;
+        color:var(--text, #0F172A);
+        margin:0 0 6px;
+        word-break:break-word;
+    }
+    .Cards-content p{
+        font-size:12.5px;
+        color:var(--text-muted, #64748B);
+        margin:0 0 14px;
+    }
+    .Cards-content p strong{color:var(--text, #0F172A);font-weight:600;}
+
+    .role-badge{
+        display:inline-flex;
+        align-items:center;
+        gap:5px;
+        font-size:11px;
+        font-weight:600;
+        padding:3px 10px;
+        border-radius:999px;
+        text-transform:capitalize;
+        width:fit-content;
+        margin-bottom:14px;
+    }
+    .role-badge-admin{background:var(--primary-soft, #EEF2FF); color:var(--primary, #4F46E5) !important;}
+    .role-badge-user{background:var(--bg, #F8FAFC); color:var(--text-muted, #64748B) !important;}
+
+    .actions{
+        display:flex;
+        gap:10px;
+        flex-wrap:wrap;
+    }
+    .actions form{flex:1;min-width:110px;}
+
+    .role-btn{
+        width:100%;
+        padding:9px 14px;
+        border:1px solid var(--border, #E7EBF3) !important;
+        border-radius:var(--radius-sm, 10px);
+        background:var(--card, #fff) !important;
+        color:var(--primary, #4F46E5) !important;
+        font-size:12.5px;
+        font-weight:600;
+        font-family:inherit;
+        cursor:pointer;
+        transition:all .2s cubic-bezier(.4,0,.2,1);
+    }
+    .role-btn:hover{
+        background:var(--primary-soft, #EEF2FF) !important;
+        border-color:var(--primary-light, #818CF8) !important;
+        transform:translateY(-2px);
+    }
+
+    .delete-btn{
+        width:100%;
+        padding:9px 14px;
+        border:none !important;
+        border-radius:var(--radius-sm, 10px);
+        background:var(--danger, #EF4444) !important;
+        color:#fff !important;
+        font-size:12.5px;
+        font-weight:600;
+        font-family:inherit;
+        cursor:pointer;
+        box-shadow:0 4px 14px -2px rgba(239,68,68,.35);
+        transition:all .2s cubic-bezier(.4,0,.2,1);
+    }
+    .delete-btn:hover{
+        background:#dc2626 !important;
+        transform:translateY(-2px);
+        box-shadow:0 8px 20px -4px rgba(239,68,68,.45);
+    }
+
+    .lh-empty{
+        grid-column:1/-1;
+        text-align:center;
+        padding:48px 20px;
+        color:var(--text-muted, #64748B);
+        background:var(--card, #fff);
+        border:1px dashed var(--border, #E7EBF3);
+        border-radius:var(--radius-lg, 16px);
+        font-size:14px;
+    }
+
+    @media (max-width:700px){
+        .lh-page{padding:20px;}
+    }
+</style>
+
+<div class="lh-page">
     <h1 class="availbook">All Registered Users</h1>
+    <p class="lh-sub"><%= users.length %> accounts in the system.</p>
 
-    <div class="user-grid">
+    <div class="users-grid">
 
         <% if (users.length > 0) { %>
 
             <% users.forEach(user => { %>
 
-                <div class="Card">
-                    <div class="Card-content">
+                <div class="Cards">
+                    <div class="Cards-content">
+
+                        <div class="user-avatar"><%= user.email.charAt(0) %></div>
 
                         <h3><%= user.email %></h3>
 
-                        <p>
-                            Role :
-                            <strong><%= user.role %></strong>
-                        </p>
+                        <span class="role-badge <%= user.role === 'admin' ? 'role-badge-admin' : 'role-badge-user' %>">
+                            <%= user.role %>
+                        </span>
 
                         <% if (user._id.toString() !== locals.user._id.toString()) { %>
 
@@ -50,11 +195,12 @@
 
         <% } else { %>
 
-            <p>No users found.</p>
+            <p class="lh-empty">No users found.</p>
 
         <% } %>
 
     </div>
+</div>
 
 </body>
 </html>
