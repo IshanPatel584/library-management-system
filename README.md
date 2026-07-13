@@ -1,18 +1,53 @@
 # 📚 Library Management System
 
-A simple Library Management System built using Node.js, Express.js, MongoDB, JWT Authentication, and EJS.
+A full-stack **Library Management System** built using **Node.js, Express.js, MongoDB, JWT Authentication, and EJS**.
+The system allows users to browse and borrow books while providing admins with a complete dashboard to manage books, users, and borrowing activities.
 
-## Features
+## 🚀 Features
+
+### Authentication & User Management
 
 - User Signup
-- User Login
-- JWT Authentication
+- User Login / Logout
+- JWT-based Authentication
 - Password Hashing using bcrypt
+- Protected Routes
+- Role-based access (Admin/User)
+
+### 📖 Book Management
+
 - Add Books
 - View Available Books
-- Protected Routes
+- Edit Books
+- Delete Books
+- Manage book quantity
+- Search books
 
-## Technologies Used
+### 🔄 Borrow & Return System
+
+- Borrow books
+- Return books
+- Track borrowed date
+- Track due date
+- Track returned date
+- Manage borrowing history
+- Handle unavailable/out-of-stock books
+
+### 🛠 Admin Dashboard
+
+- Admin authentication
+- View and manage users
+- Manage books
+- Manage borrow/return records
+- Control library operations through admin panel
+
+### 🎨 UI Improvements
+
+- Responsive user interface
+- Modern dashboard design
+- Improved navigation and user experience
+
+## 🛠 Technologies Used
 
 - Node.js
 - Express.js
@@ -22,48 +57,64 @@ A simple Library Management System built using Node.js, Express.js, MongoDB, JWT
 - JSON Web Token (JWT)
 - bcrypt
 - Cookie Parser
+- HTML
+- CSS
+- JavaScript
 
-## Installation
+## 📦 Installation
 
-1. Clone the repository
+### Clone the repository
 
 ```bash
 git clone https://github.com/IshanPatel584/library-management-system.git
 ```
 
-2. Go to the project folder
+### Go to the project folder
 
 ```bash
 cd library-management-system
 ```
 
-3. Install dependencies
+### Install dependencies
 
 ```bash
 npm install
 ```
 
-4. Start MongoDB.
+### Configure Environment Variables
 
-5. Run the application
+Create a `.env` file:
+
+```
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_secret_key
+```
+
+### Start MongoDB
+
+Make sure MongoDB is running locally or use MongoDB Atlas.
+
+### Run the application
+
+Using Node:
 
 ```bash
 node app.js
 ```
 
-or
+or using nodemon:
 
 ```bash
 nodemon app.js
 ```
 
-6. Open your browser and visit
+Open your browser:
 
 ```
 http://localhost:5000
 ```
 
-## Project Structure
+## 📂 Project Structure
 
 ```
 ├── controllers
@@ -73,18 +124,19 @@ http://localhost:5000
 ├── routes
 ├── views
 ├── app.js
-└── package.json
+├── package.json
+└── README.md
 ```
 
-## Future Improvements
+## 🔮 Future Improvements
 
-- Upload book images
-- Edit books
-- Delete books
-- Search books
-- Borrow and return books
-- Admin dashboard
+- Book image upload
+- Email notifications for due dates
+- Fine calculation for late returns
+- Advanced search and filtering
+- Deployment with cloud hosting
+- API documentation
 
-## Author
+## 👨‍💻 Author
 
 **Ishan Patel**
